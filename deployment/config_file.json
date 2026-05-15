@@ -1,0 +1,41 @@
+{
+  "data_source": {
+    "type": "csv",
+    "path": "C:\\Users\\moreyramaida\\OneDrive - Caja de Seguros S.A\\Escritorio\\credit-scorecard\\data\\german_credit_data.csv"
+  },
+
+  "dataset": {
+    "name": "german_credit",
+
+    "columns": [
+      "status",
+      "duration",
+      "credit_history",
+      "purpose",
+      "amount",
+      "savings",
+      "employment",
+      "installment_rate",
+      "personal_status",
+      "other_debtors",
+      "residence_since",
+      "property",
+      "age",
+      "other_installment_plans",
+      "housing",
+      "existing_credits",
+      "job",
+      "people_liable",
+      "telephone",
+      "foreign_worker",
+      "target"
+    ],
+
+    "target": "target",
+
+    "target_mapping": {
+      "1": 0,
+      "2": 1
+    }
+  }
+}

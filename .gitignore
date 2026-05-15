@@ -1,0 +1,60 @@
+# Archivos de entorno
+.env
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Archivos de Streamlit
+.streamlit/
+
+# Directorios temporales
+temp_build/
+.temp/
+tmp/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+cred/
+
+# Entornos virtuales
+venv/
+ENV/
+env/
+
+# Archivos de IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Archivos de datos
+*.csv
+*.parquet
+*.xlsx
+
+# Archivos de modelos
+*.pkl
+*.joblib
+
+dev-analytics-bq-dev*
+prd-analytics-bq-prd*

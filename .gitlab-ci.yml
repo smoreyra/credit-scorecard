@@ -1,0 +1,66 @@
+.build_template: &build_template
+  image: google/cloud-sdk:latest
+  services:
+    - name: docker:24.0.2-dind
+      alias: docker
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
+    IMAGE_NAME_BASE: "southamerica-east1-docker.pkg.dev"
+  before_script:
+    - apt-get update && apt-get install -y docker.io
+    - echo "$GCP_ACCOUNT_KEY" | base64 --decode | gcloud auth activate-service-account --key-file=-
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud auth configure-docker --project $GCP_PROJECT_ID --quiet
+  script:
+    - |
+      docker build \
+        -t ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA} \
+        -t ${IMAGE_NAME}:${IMAGE_TAG} \
+        --build-arg ENV=${ENVIRONMENT} \
+        --build-arg GCP_KEY=${GCP_IMAGE_KEY} \
+        --build-arg GCP_PROJECT_ID=${GCP_PROJECT_ID} \
+        .
+    - docker push ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}
+    - docker push ${IMAGE_NAME}:${IMAGE_TAG}
+  stage: build
+
+# DEV
+build_dev:
+  <<: *build_template
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
+    GCP_PROJECT_ID: ${GCP_PROJECT_ID_DEV}
+    IMAGE_NAME: "gcr.io/dev-analytics-bq-dev-337a/cltv"
+    IMAGE_TAG: "latest"
+    ENVIRONMENT: ${ENV_DEV}
+    GCP_ACCOUNT_KEY: ${GCP_CRED_ARTIFACT_DEV}
+    GCP_IMAGE_KEY: ${GCP_CRED_DEV}
+  only:
+    refs:
+      - dev
+    changes:
+      - Dockerfile
+      - .gitlab-ci.yml
+      - source/**/*
+      - sql/**/*
+      - main.py
+      - requirements.txt
+
+# PRD
+build_prd:
+  <<: *build_template
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
+    GCP_PROJECT_ID: ${GCP_PROJECT_ID_PRD}
+    IMAGE_NAME: "gcr.io/prd-analytics-bq-prd-ed5b/cltv"
+    IMAGE_TAG: "latest"
+    ENVIRONMENT: ${ENV_PRD}
+    GCP_ACCOUNT_KEY: ${GCP_CRED_ARTIFACT_PRD}
+    GCP_IMAGE_KEY: ${GCP_CRED_PRD}
+  only:
+    refs:
+      - main
+  when: manual
