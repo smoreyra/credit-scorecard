@@ -1,7 +1,7 @@
 {
   "data_source": {
     "type": "csv",
-    "path": "C:\\Users\\moreyramaida\\OneDrive - Caja de Seguros S.A\\Escritorio\\credit-scorecard\\data\\german_credit_data.csv"
+    "path": "data/raw/german.data"
   },
 
   "dataset": {
